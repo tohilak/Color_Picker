@@ -1,17 +1,3 @@
-// script.js
-document.getElementById('dataType').addEventListener('change', function() {
-    updateInputFields();
-    clearQRCode();
-});
-
-function updateInputFields() {
-    const dataType = document.getElementById('dataType').value;
-    const inputFields = document.getElementById('inputFields');
-    inputFields.innerHTML = '';
-
-    switch (dataType) {
-        case 'text':
-            inputFields.innerHTML = '<label for="text">Text:</label><input type="text" id="text">';
 const canvas = document.getElementById('drawingPad');
 const ctx = canvas.getContext('2d');
 const colorPicker = document.getElementById('colorPicker');
