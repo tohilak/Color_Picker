@@ -1,44 +1,84 @@
-document.addEventListener("DOMContentLoaded", function() {
-    const colorPicker = document.getElementById("colorPicker");
-    const selectedColor = document.getElementById("selectedColor");
-    const saveImageBtn = document.getElementById("saveImageBtn");
-    const copyHexBtn = document.getElementById("copyHexBtn");
+// script.js
+document.getElementById('dataType').addEventListener('change', function() {
+    updateInputFields();
+    clearQRCode();
+});
 
-    colorPicker.addEventListener("input", function() {
-        const color = colorPicker.value;
-        selectedColor.style.backgroundColor = color;
+function updateInputFields() {
+    const dataType = document.getElementById('dataType').value;
+    const inputFields = document.getElementById('inputFields');
+    inputFields.innerHTML = '';
+
+    switch (dataType) {
+        case 'text':
+            inputFields.innerHTML = '<label for="text">Text:</label><input type="text" id="text">';
+const canvas = document.getElementById('drawingPad');
+const ctx = canvas.getContext('2d');
+const colorPicker = document.getElementById('colorPicker');
+const saveButton = document.getElementById('saveButton');
+
+let drawing = false;
+let currentColor = colorPicker.value;
+
+canvas.width = window.innerWidth * 0.8;
+canvas.height = window.innerHeight * 0.6;
+
+function startDrawing(e) {
+  drawing = true;
+  draw(e);
+}
+
+function endDrawing() {
+  drawing = false;
+  ctx.beginPath();
+}
+
+function draw(e) {
+  if (!drawing) return;
+
+  ctx.lineWidth = 5;
+  ctx.lineCap = 'round';
+  ctx.strokeStyle = currentColor;
+
+  const rect = canvas.getBoundingClientRect();
+  const x = e.touches ? e.touches[0].clientX - rect.left : e.clientX - rect.left;
+  const y = e.touches ? e.touches[0].clientY - rect.top : e.clientY - rect.top;
+
+  ctx.lineTo(x, y);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(x, y);
+}
+
+canvas.addEventListener('mousedown', startDrawing);
+canvas.addEventListener('mouseup', endDrawing);
+canvas.addEventListener('mousemove', draw);
+canvas.addEventListener('touchstart', startDrawing);
+canvas.addEventListener('touchend', endDrawing);
+canvas.addEventListener('touchmove', draw);
+
+colorPicker.addEventListener('input', (e) => {
+  currentColor = e.target.value;
+});
+
+saveButton.addEventListener('click', () => {
+  if (navigator.canShare && navigator.canShare({ files: [] })) {
+    canvas.toBlob((blob) => {
+      const file = new File([blob], 'drawing.png', { type: 'image/png' });
+      const filesArray = [file];
+
+      navigator.share({
+        files: filesArray,
+        title: 'Drawing',
+        text: 'Check out my drawing!',
+      })
+      .then(() => console.log('Share was successful.'))
+      .catch((error) => console.log('Sharing failed', error));
     });
-
-    saveImageBtn.addEventListener("click", function() {
-        // Create a canvas element to draw the selected color
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = 100;
-        canvas.height = 100;
-        ctx.fillStyle = colorPicker.value;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        
-        // Convert the canvas to a data URL representing the PNG image
-        const dataURL = canvas.toDataURL("image/png");
-
-        // Trigger download of the PNG image
-        const a = document.createElement('a');
-        a.href = dataURL;
-        a.download = 'selected_color.png';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-    });
-
-    copyHexBtn.addEventListener("click", function() {
-        // Copy the hex value of the selected color to the clipboard
-        const hexValue = colorPicker.value;
-        navigator.clipboard.writeText(hexValue)
-            .then(() => {
-                alert("Hex value copied to clipboard: " + hexValue);
-            })
-            .catch(err => {
-                console.error('Failed to copy: ', err);
-            });
-    });
+  } else {
+    const link = document.createElement('a');
+    link.download = 'drawing.png';
+    link.href = canvas.toDataURL();
+    link.click();
+  }
 });
