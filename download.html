@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Download Page</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Download Page</h1>
+    <a id="downloadLink" href="#" onclick="redirectToOriginalLink()" class="button">Download</a>
+  </div>
+
+  <script>
+    function redirectToOriginalLink() {
+      var urlParams = new URLSearchParams(window.location.search);
+      var originalLink = urlParams.get('link');
+      
+      // Redirect to the original link
+      window.location.href = originalLink;
+    }
+
+    // Prevent going back to the main page
+    history.pushState(null, null, window.location.href);
+    window.addEventListener('popstate', function () {
+      history.pushState(null, null, window.location.href);
+    });
+  </script>
+</body>
+</html>
