@@ -11,6 +11,16 @@ function generateLink() {
   // Generate the link
   var downloadLink = 'download.html?link=' + encodeURIComponent(linkInput);
 
-  // Display the link as a button
-  linkOutput.innerHTML = '<a href="' + downloadLink + '" class="button">Click here to get the download link</a>';
+  // Display the link
+  linkOutput.innerHTML = '<a href="' + downloadLink + '" class="button red">Click here to get the download link</a>';
+}
+
+function pasteLink() {
+  navigator.clipboard.readText()
+    .then(text => {
+      document.getElementById('linkInput').value = text;
+    })
+    .catch(err => {
+      console.error('Failed to read clipboard contents: ', err);
+    });
 }

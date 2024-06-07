@@ -6,13 +6,14 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #f8f9fa;
+  background-image: url('p.jpg'); /* Background image */
+  background-size: cover; /* Cover the entire background */
 }
 
 .container {
   max-width: 600px;
   padding: 20px;
-  background-color: #fff;
+  background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   text-align: center;
@@ -31,32 +32,28 @@ input[type="text"] {
   box-sizing: border-box;
 }
 
-button {
+button, .button {
   padding: 10px 20px;
-  background-color: #007bff;
+  background-color: #007bff; /* Blue button */
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   margin-top: 10px;
+  text-decoration: none; /* Remove underline */
+  display: inline-block; /* Display as inline block */
+  transition: background-color 0.3s; /* Smooth transition */
 }
 
-button:hover {
-  background-color: #0056b3;
+button:hover, .button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
 }
 
-.button {
-  display: inline-block;
-  padding: 10px 20px;
+.button.red {
   background-color: red; /* Red button */
-  color: white;
-  text-decoration: none;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
 }
 
-.button:hover {
+.button.red:hover {
   background-color: darkred; /* Dark red on hover */
 }
 
