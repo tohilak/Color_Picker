@@ -1,4 +1,4 @@
-async function generateLink() {
+function generateLink() {
   var linkInput = document.getElementById('linkInput').value;
   var linkOutput = document.getElementById('linkOutput');
   
@@ -8,16 +8,9 @@ async function generateLink() {
     return;
   }
 
-  // Generate TinyURL
-  var tinyUrl = await getTinyUrl(linkInput);
+  // Generate the link
+  var downloadLink = 'download.html?link=' + encodeURIComponent(linkInput);
 
   // Display the link as a button
-  linkOutput.innerHTML = '<a href="' + tinyUrl + '" class="button">Click here to get the download link</a>';
-}
-
-async function getTinyUrl(originalUrl) {
-  var apiUrl = 'https://tinyurl.com/api-create.php?url=' + encodeURIComponent(originalUrl);
-  var response = await fetch(apiUrl);
-  var tinyUrl = await response.text();
-  return tinyUrl;
+  linkOutput.innerHTML = '<a href="' + downloadLink + '" class="button">Click here to get the download link</a>';
 }
